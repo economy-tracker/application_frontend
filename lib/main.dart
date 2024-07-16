@@ -1,7 +1,8 @@
-import 'package:application_frontend/view/home/home_screen.dart';
+import 'view/home/provider/select_index_provider.dart';
 import 'package:application_frontend/view/page_manager/page_manager_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:provider/provider.dart';
 
 void main(){
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -15,9 +16,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: PageManagerScreen(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_)=> IndexState())
+        ],
+        child: const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: PageManagerScreen(),
+        ),
     );
   }
 }

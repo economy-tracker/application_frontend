@@ -27,8 +27,8 @@ class _PageManagerScreenState extends State<PageManagerScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> pages = [
-      HomeScreen(),
-      ChartScreen(),
+      const HomeScreen(),
+      const ChartScreen(),
     ];
 
     return Scaffold(
@@ -40,13 +40,11 @@ class _PageManagerScreenState extends State<PageManagerScreen> {
       bottomNavigationBar: Row(
         children: [
           IconButton(
-              onPressed: () => _pageController.jumpToPage(0),
-              icon: Icon(Icons.home)),
+            onPressed: () => _pageController.jumpToPage(0),
+            icon: const Icon(Icons.home)),
           IconButton(
-              onPressed: () {
-                _pageController.jumpToPage(1);
-              },
-              icon: Icon(Icons.home)),
+            onPressed: () => _pageController.jumpToPage(1),
+            icon: const Icon(Icons.home)),
         ],
       ),
     );
