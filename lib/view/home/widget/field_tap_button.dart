@@ -6,7 +6,8 @@ import '../provider/select_index_provider.dart';
 class FieldTapButton extends StatefulWidget {
   final int index;
   final String value;
-  const FieldTapButton({super.key, required this.index, required this.value});
+  final PageController controller;
+  const FieldTapButton({super.key, required this.index, required this.value, required this.controller});
 
   @override
   State<FieldTapButton> createState() => _FieldTapButtonState();
@@ -18,7 +19,7 @@ class _FieldTapButtonState extends State<FieldTapButton> {
     IndexState indexProvider = context.watch<IndexState>();
     return Center(child: GestureDetector(
       child: Text(widget.value, style: TextStyle(color: (widget.index == indexProvider.index) ? const Color(0xFF3252b9) : Colors.white, fontSize: 20)),
-      onTap: ()=>indexProvider.setIndex(widget.index)
+      onTap: ()=>{indexProvider.setIndex(widget.index), widget.controller.jumpToPage(widget.index)}
     ));
   }
 }
