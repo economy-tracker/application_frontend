@@ -1,21 +1,21 @@
-import 'package:application_frontend/view/home/provider/news_list_provider.dart';
+import 'package:application_frontend/view/home/provider/article_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core.dart';
 import '../widget/line.dart';
-import '../widget/news_list_view.dart';
+import '../widget/article_list_view.dart';
 
-class NewsPage extends StatefulWidget {
+class ArticlePage extends StatefulWidget {
   final String field;
-  const NewsPage({super.key, required this.field});
+  const ArticlePage({super.key, required this.field});
 
   @override
-  State<NewsPage> createState() => _NewsPageState();
+  State<ArticlePage> createState() => _ArticlePageState();
 }
 
-class _NewsPageState extends State<NewsPage> {
+class _ArticlePageState extends State<ArticlePage> {
   int page = 0;
-  late NewsState data;
+  late ArticleState data;
   late ScrollController controller;
 
   Future<void> loadData() async {
@@ -29,7 +29,7 @@ class _NewsPageState extends State<NewsPage> {
     super.initState();
     controller = ScrollController()..addListener(loadData);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      data = Provider.of<NewsState>(context, listen: false);
+      data = Provider.of<ArticleState>(context, listen: false);
       if (widget.field == "주요"){
         await data.fetchMain(page++);
       } else {
@@ -55,7 +55,7 @@ class _NewsPageState extends State<NewsPage> {
           Text("${widget.field} 뉴스", style: heading),
           const Line(),
           const SizedBox(height: 20),
-          NewsListView(field: widget.field)
+          ArticleListView(field: widget.field)
         ]
       )
     );

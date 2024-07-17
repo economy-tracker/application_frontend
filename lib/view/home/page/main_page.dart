@@ -1,8 +1,8 @@
-import 'package:application_frontend/view/home/page/news_page.dart';
+import 'package:application_frontend/view/home/page/article_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../provider/news_list_provider.dart';
+import '../provider/article_list_provider.dart';
 import '../widget/block.dart';
 import '../widget/line.dart';
 import '../../core.dart';
@@ -18,11 +18,12 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int page = 0;
-  late NewsState data;
+  late ArticleState data;
   late ScrollController controller;
 
   Future<void> loadData() async {
-    if (controller.position.pixels > controller.position.maxScrollExtent-50){
+    if (controller.position.pixels == controller.position.maxScrollExtent){
+      print(page);
       data.fetchMain(page++);
     }
   }
@@ -31,10 +32,6 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     controller = ScrollController()..addListener(loadData);
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      data = Provider.of<NewsState>(context, listen: false);
-      await data.fetchMain(page++);
-    });
   }
 
   @override
@@ -45,6 +42,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    data = context.watch<ArticleState>();
     return SingleChildScrollView(
       controller: controller,
       scrollDirection: Axis.vertical,
@@ -76,7 +74,7 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
         const SizedBox(height: 20),
-        const NewsPage(field: "주요")
+        const ArticlePage(field: "주요")
       ])
     );
   }

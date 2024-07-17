@@ -1,4 +1,4 @@
-import 'package:application_frontend/view/home/page/news_page.dart';
+import 'package:application_frontend/view/home/page/article_page.dart';
 import 'package:application_frontend/view/home/widget/field_tap_button.dart';
 import 'package:application_frontend/view/home/widget/line.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +12,10 @@ class HomeScreen extends StatelessWidget {
     List<String> fields = ["메인", "금융", "증권", "산업", "부동산"];
     List<Widget> homeScreen = [
       const MainPage(summaryText: "태양광으로 온실가스 절감, 신기술 발전 기대"),
-      const NewsPage(field: "금융"),
-      const NewsPage(field: "증권"),
-      const NewsPage(field: "산업"),
-      const NewsPage(field: "부동산")
+      const ArticlePage(field: "금융"),
+      const ArticlePage(field: "증권"),
+      const ArticlePage(field: "산업"),
+      const ArticlePage(field: "부동산")
     ];
     PageController pageController = PageController();
 

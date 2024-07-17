@@ -1,16 +1,17 @@
+import 'package:application_frontend/model/article_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core.dart';
 
-class NewsWidget extends StatefulWidget {
-  final NewsData data;
-  const NewsWidget({super.key, required this.data});
+class ArticleWidget extends StatefulWidget {
+  final ArticleModel data;
+  const ArticleWidget({super.key, required this.data});
 
   @override
-  State<NewsWidget> createState() => _NewsWidgetState();
+  State<ArticleWidget> createState() => _ArticleWidgetState();
 }
 
-class _NewsWidgetState extends State<NewsWidget> {
+class _ArticleWidgetState extends State<ArticleWidget> {
   bool isSelected = false;
 
   @override
@@ -47,14 +48,14 @@ class _NewsWidgetState extends State<NewsWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          SizedBox(width: 250, child: Text(
                             widget.data.title,
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 15,
                               overflow: TextOverflow.ellipsis,
                             ),
-                          ),
+                          )),
                           GestureDetector(
                             onTap: () {
                               setState(() {
@@ -71,7 +72,7 @@ class _NewsWidgetState extends State<NewsWidget> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        widget.data.contents,
+                        widget.data.description,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 13,
@@ -81,7 +82,7 @@ class _NewsWidgetState extends State<NewsWidget> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: Text(
-                          widget.data.date,
+                          widget.data.pubDate,
                           style: const TextStyle(
                             fontSize: 13,
                             color: Color(0xFF47494F),
