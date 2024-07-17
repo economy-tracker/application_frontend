@@ -1,10 +1,13 @@
+import 'package:application_frontend/view/home/widget/color_box.dart';
 import 'package:flutter/material.dart';
 
 import '../core.dart';
 import 'chart_pie.dart';
 
 class ChartScreen extends StatelessWidget {
-  const ChartScreen({super.key});
+  ChartScreen({super.key});
+  final List<Color> colors = [const Color(0xFFCDD4DB), const Color(0xFF626E79), const Color(0xFF353E48), const Color(0xFF252B35)];
+  final List<double> pieValue = [15, 24, 26, 35];
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +31,13 @@ class ChartScreen extends StatelessWidget {
         ),
         width: double.infinity,
         height: double.infinity,
-        child: const Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 60),
-            Text("그래프를 보고 경제, 금융, 증권, 산업,\n부동산 시장의 동향을 분석해 보세요.", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-            Expanded(child: ChartPie(values: [25, 24, 26, 25]))
+            const SizedBox(height: 60),
+            const Text("그래프를 보고 금융, 증권, 산업,\n부동산 시장의 동향을 분석해 보세요.", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+            Expanded(child: ChartPie(values: pieValue, colors: colors))
           ]
         ),
       ),

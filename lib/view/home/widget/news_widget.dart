@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import '../../core.dart';
 
 class NewsWidget extends StatefulWidget {
-  const NewsWidget({super.key});
+  final NewsData data;
+  const NewsWidget({super.key, required this.data});
 
   @override
   State<NewsWidget> createState() => _NewsWidgetState();
@@ -12,7 +15,7 @@ class _NewsWidgetState extends State<NewsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Column(children: [Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -44,15 +47,14 @@ class _NewsWidgetState extends State<NewsWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "뉴스 제목",
-                            style: TextStyle(
+                          Text(
+                            widget.data.title,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 15,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-
                           GestureDetector(
                             onTap: () {
                               setState(() {
@@ -68,18 +70,19 @@ class _NewsWidgetState extends State<NewsWidget> {
                         ],
                       ),
                       const SizedBox(height: 5),
-                      const Text(
-                        "내용 요약",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 13,
-                            overflow: TextOverflow.ellipsis),
+                      Text(
+                        widget.data.contents,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          overflow: TextOverflow.ellipsis
+                        ),
                       ),
-                      const Align(
+                      Align(
                         alignment: Alignment.centerRight,
                         child: Text(
-                          "날짜",
-                          style: TextStyle(
+                          widget.data.date,
+                          style: const TextStyle(
                             fontSize: 13,
                             color: Color(0xFF47494F),
                           ),
@@ -90,7 +93,7 @@ class _NewsWidgetState extends State<NewsWidget> {
                 ),
               ],
             ),
-            if (!isSelected)
+            if (isSelected)
               Positioned(
                 right: 20,
                 child: Container(
@@ -98,21 +101,24 @@ class _NewsWidgetState extends State<NewsWidget> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                    child: Text(
-                      "링크 복사하기",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    child: GestureDetector(
+                      child: const Text(
+                        "링크 복사하기",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                        )
                       ),
-                    ),
+                      onTapDown: (_)=> Clipboard.setData(ClipboardData(text: widget.data.link))
+                    )
                   ),
                 ),
               ),
           ],
         ),
       ),
-    );
+    ), const SizedBox(height: 10)]);
   }
 }

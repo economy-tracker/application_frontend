@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class ChartLine extends StatelessWidget {
   final List<String> months;
   final List<double> values;
+  final Color color;
 
-  const ChartLine({super.key, required this.months, required this.values});
+  const ChartLine({super.key, required this.months, required this.values, required this.color});
 
   @override
   Widget build(context) {
@@ -17,7 +18,7 @@ class ChartLine extends StatelessWidget {
               values.length,
               (i)=>FlSpot(i * 1.0, values[i])
             ),
-            color: Colors.grey,
+            color: color,
             barWidth: 4,
             isCurved: false
           )

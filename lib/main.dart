@@ -1,8 +1,10 @@
-import 'view/home/provider/select_index_provider.dart';
-import 'package:application_frontend/view/page_manager/page_manager_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
+
+import 'view/home/provider/select_index_provider.dart';
+import 'view/home/provider/news_list_provider.dart';
+import 'package:application_frontend/view/page_manager/page_manager_screen.dart';
 
 void main(){
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -18,11 +20,13 @@ class MyApp extends StatelessWidget {
     FlutterNativeSplash.remove();
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_)=> IndexState())
+          ChangeNotifierProvider(create: (_)=> IndexState()),
+          ChangeNotifierProvider(create: (_)=>NewsState())
         ],
-        child: const MaterialApp(
+        child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: PageManagerScreen(),
+          theme: ThemeData(fontFamily: 'Pretendard'),
+          home: const PageManagerScreen(),
         ),
     );
   }

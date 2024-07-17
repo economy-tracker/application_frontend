@@ -52,7 +52,7 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Line(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Expanded(child: PageView(
               physics: const NeverScrollableScrollPhysics(),
               controller: pageController,

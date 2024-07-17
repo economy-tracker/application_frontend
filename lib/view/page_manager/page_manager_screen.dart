@@ -11,6 +11,7 @@ class PageManagerScreen extends StatefulWidget {
 
 class _PageManagerScreenState extends State<PageManagerScreen> {
   late final PageController _pageController;
+  int selected = 0;
 
   @override
   void initState() {
@@ -28,23 +29,37 @@ class _PageManagerScreenState extends State<PageManagerScreen> {
   Widget build(BuildContext context) {
     List<Widget> pages = [
       const HomeScreen(),
-      const ChartScreen(),
+      ChartScreen(),
     ];
 
     return Scaffold(
+      backgroundColor: Colors.black,
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: pages,
       ),
       bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           IconButton(
-            onPressed: () => _pageController.jumpToPage(0),
-            icon: const Icon(Icons.home)),
+            onPressed: () {
+              setState(() {
+                selected = 0;
+              });
+              _pageController.jumpToPage(selected);
+            },
+            icon: Icon(Icons.home, color: selected == 0 ? const Color(0xFF3252B9) : Colors.white)
+          ),
           IconButton(
-            onPressed: () => _pageController.jumpToPage(1),
-            icon: const Icon(Icons.home)),
+            onPressed: () {
+              setState(() {
+                selected = 1;
+              });
+              _pageController.jumpToPage(selected);
+            },
+            icon: Icon(Icons.bar_chart_outlined, color: selected == 1 ? const Color(0xFF3252B9) : Colors.white)
+          ),
         ],
       ),
     );
