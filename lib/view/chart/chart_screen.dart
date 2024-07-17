@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../core.dart';
 import 'chart_pie.dart';
+import '../../repository/pie_chart_repository.dart';
+import '../../model/pie_data_model.dart';
 
 class ChartScreen extends StatelessWidget {
   ChartScreen({super.key});
-  final List<Color> colors = [const Color(0xFFCDD4DB), const Color(0xFF626E79), const Color(0xFF353E48), const Color(0xFF252B35)];
-  final List<double> pieValue = [15, 24, 26, 35];
+
+  List<PieDataModel> pieValue = [];
+
+  Future<void> getValue(PieChartRepository repository) async {
+    pieValue = await repository.getDataList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +41,8 @@ class ChartScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 60),
-            const Text("그래프를 보고 금융, 증권, 산업,\n부동산 시장의 동향을 분석해 보세요.", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-            Expanded(child: ChartPie(values: pieValue, colors: colors))
+            const Text("그래프를 보고 금융, 증권, 산업,\n부동산 시장의 동향을 분석해 보세요.", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500), textAlign: TextAlign.center),
+            Expanded(child: ChartPie())
           ]
         ),
       ),

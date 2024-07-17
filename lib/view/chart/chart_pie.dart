@@ -1,7 +1,5 @@
-import 'dart:ffi';
-import 'dart:math';
-
 import 'package:application_frontend/view/chart/chart_line.dart';
+import 'package:application_frontend/view/core.dart';
 import 'package:application_frontend/view/home/provider/overlay_provider.dart';
 import 'package:application_frontend/view/home/widget/color_box.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -9,44 +7,52 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ChartPie extends StatefulWidget {
-  final List<double> values;
-  final List<Color> colors;
-  const ChartPie({super.key, required this.values, required this.colors});
+  final List<Color> colors = [
+    const Color(0xFFE13749),
+    const Color(0xFF6B5CEF),
+    const Color(0xFF47CD56),
+    const Color(0xFFDFC43C),
+    const Color(0xFF737373)
+  ];
+
+  ChartPie({super.key});
 
   @override
-  _ChartPieState createState() => _ChartPieState();
+  ChartPieState createState() => ChartPieState();
 }
 
-class _ChartPieState extends State<ChartPie> {
+class ChartPieState extends State<ChartPie> {
   int touchedIndex = -1;
-  final List<String> fields = ["금융", "증권", "산업", "부동산"];
   List<Widget> charts = [];
 
   @override
   void initState() {
+    super.initState();
     for (int i = 0; i < 4; i++){
-      double temp = i * 1.0;
       charts.add(
         ChartLine(
-          months: const ["January", "February", "March", "April", "May"],
-          values: [temp, temp+1, (temp%2)*2, temp/2],
+          category: pieValues![i].category,
           color: widget.colors[i]
         )
       );
     }
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final overlayProvider = context.read<OverlayProvider>();
+    final values = pieValues;
+
+    if (values == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     return Column(
       children: [
         Expanded(child: PieChart(
           PieChartData(
             sectionsSpace: 0,
-            centerSpaceRadius: 40,
+            centerSpaceRadius: 50,
             sections: showingSections(),
             pieTouchData: PieTouchData(
               touchCallback: (event, target) {
@@ -57,11 +63,14 @@ class _ChartPieState extends State<ChartPie> {
                 setState(() {
                   touchedIndex = target.touchedSection!.touchedSectionIndex;
                 });
-                if (touchedIndex == -1){
+                if (touchedIndex == -1 || touchedIndex == 4){
+                  setState(() {
+                    touchedIndex = -1;
+                  });
                   return;
                 }
                 overlayProvider.setChartOverlay(
-                  category: fields[touchedIndex],
+                  category: getKeyFromValue(values[touchedIndex].category),
                   chart: charts[touchedIndex],
                   colorBoxColor: widget.colors[touchedIndex],
                 );
@@ -77,19 +86,21 @@ class _ChartPieState extends State<ChartPie> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ColorBox(color: widget.colors[0], field: "금융"),
+                ColorBox(color: widget.colors[0], field: getKeyFromValue(values[0].category)),
                 const SizedBox(width: 25),
-                ColorBox(color: widget.colors[1], field: "증권")
+                ColorBox(color: widget.colors[1], field: getKeyFromValue(values[1].category))
               ],
             ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ColorBox(color: widget.colors[2], field: "산업"),
+                ColorBox(color: widget.colors[2], field: getKeyFromValue(values[2].category)),
                 const SizedBox(width: 25),
-                ColorBox(color: widget.colors[3], field: "부동산")
-              ],
+                ColorBox(color: widget.colors[3], field: getKeyFromValue(values[3].category)),
+                const SizedBox(width: 25),
+                ColorBox(color: widget.colors[4], field: getKeyFromValue(values[4].category))
+              ]
             ),
             const SizedBox(height: 20)
           ]
@@ -103,14 +114,14 @@ class _ChartPieState extends State<ChartPie> {
   }
 
   List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
+    return List.generate(5, (i) {
       final isTouched = (i == touchedIndex);
       final fontSize = isTouched ? 20.0 : 16.0;
-      final radius = isTouched ? 60.0 : 54.0;
+      final radius = isTouched ? 72.0 : 60.0;
       return PieChartSectionData(
         color: widget.colors[i],
-        value: widget.values[i],
-        title: formatF(widget.values[i]),
+        value: pieValues![i].percent,
+        title: formatF(pieValues![i].percent),
         radius: radius,
         titleStyle: TextStyle(
           fontSize: fontSize,

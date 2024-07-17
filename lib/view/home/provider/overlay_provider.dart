@@ -5,7 +5,6 @@ import '../widget/char_overlay_widget.dart';
 
 class OverlayProvider extends ChangeNotifier {
   late OverlayEntry? chartOverlay;
-  // final  = Overlay.of(context);
 
   void setChartOverlay({
     required String category,

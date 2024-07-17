@@ -23,7 +23,6 @@ class _MainPageState extends State<MainPage> {
 
   Future<void> loadData() async {
     if (controller.position.pixels == controller.position.maxScrollExtent){
-      print(page);
       data.fetchMain(page++);
     }
   }
@@ -39,6 +38,18 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
     controller.dispose();
   }
+  RichText getPopularText(){
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(text: getKeyFromValue(nowPopular[0].category), style: const TextStyle(fontSize: 18)),
+          TextSpan(text: " ${(nowPopular[0].percent).round().toString()}%   ", style: TextStyle(color: Colors.redAccent[700], fontSize: 18)),
+          TextSpan(text: getKeyFromValue(nowPopular[1].category), style: const TextStyle(fontSize: 18)),
+          TextSpan(text: " ${(nowPopular[1].percent).round().toString()}%", style: TextStyle(color: Colors.redAccent[200], fontSize: 18))
+        ]
+      )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +62,16 @@ class _MainPageState extends State<MainPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("경제 요약", style: heading),
+              Text("경제 요약", style: bigHeading),
               const Line(),
               const SizedBox(height: 5),
-              Text(widget.summaryText, style: normal)
+              Text(
+                widget.summaryText,
+                style: const TextStyle(color: Colors.white, fontSize: 20, overflow: TextOverflow.ellipsis),
+                softWrap: true,
+                maxLines: null,
+                overflow: TextOverflow.visible
+              )
             ]
           )
         ),
@@ -63,13 +80,10 @@ class _MainPageState extends State<MainPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("지금 인기있는", style: heading),
+              Text("지금 인기있는", style: bigHeading),
               const Line(),
               const SizedBox(height: 5),
-              Text(
-                "text",
-                style: normal,
-              )
+              getPopularText()
             ],
           ),
         ),

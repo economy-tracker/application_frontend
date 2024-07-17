@@ -1,7 +1,7 @@
 import 'package:application_frontend/model/article_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../core.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ArticleWidget extends StatefulWidget {
   final ArticleModel data;
@@ -16,7 +16,7 @@ class _ArticleWidgetState extends State<ArticleWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [Container(
+    return GestureDetector(child: Column(children: [Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -36,8 +36,11 @@ class _ArticleWidgetState extends State<ArticleWidget> {
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Colors.grey,
                     borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset("assets/thumbnail/${widget.data.category}.png")
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -48,7 +51,7 @@ class _ArticleWidgetState extends State<ArticleWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(width: 250, child: Text(
+                          SizedBox(width: MediaQuery.of(context).size.width-150, child: Text(
                             widget.data.title,
                             style: const TextStyle(
                               color: Colors.white,
@@ -85,7 +88,7 @@ class _ArticleWidgetState extends State<ArticleWidget> {
                           widget.data.pubDate,
                           style: const TextStyle(
                             fontSize: 13,
-                            color: Color(0xFF47494F),
+                            color: Color(0xFF7A7C82),
                           ),
                         ),
                       ),
@@ -112,14 +115,21 @@ class _ArticleWidgetState extends State<ArticleWidget> {
                           fontSize: 15,
                         )
                       ),
-                      onTapDown: (_)=> Clipboard.setData(ClipboardData(text: widget.data.link))
+                      onTapDown: (_)=>{
+                        Clipboard.setData(ClipboardData(text: widget.data.link)),
+                        setState(() {
+                          isSelected = false;
+                        })
+                      }
                     )
                   ),
                 ),
               ),
-          ],
-        ),
-      ),
-    ), const SizedBox(height: 10)]);
+          ]
+        )
+      )
+    ), const SizedBox(height: 10)]),
+      onTap: ()=>launchUrl(Uri.parse(widget.data.link))
+    );
   }
 }

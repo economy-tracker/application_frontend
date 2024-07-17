@@ -6,10 +6,12 @@ import 'view/home/provider/select_index_provider.dart';
 import 'view/home/provider/article_list_provider.dart';
 import 'view/home/provider/overlay_provider.dart';
 import 'package:application_frontend/view/page_manager/page_manager_screen.dart';
+import 'view/core.dart';
 
-void main(){
+Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await init();
   runApp(const MyApp());
 }
 
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
     FlutterNativeSplash.remove();
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_)=> IndexState()),
+          ChangeNotifierProvider(create: (_)=>IndexState()),
           ChangeNotifierProvider(create: (_)=>ArticleState()),
           ChangeNotifierProvider(create: (_)=>OverlayProvider())
         ],
