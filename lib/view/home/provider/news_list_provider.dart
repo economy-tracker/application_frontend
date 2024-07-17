@@ -21,5 +21,6 @@ class NewsState extends ChangeNotifier {
     for (int i = 0; i < 10; i++){
       fieldNews[field]!.add(NewsData(title: "title", contents: "contents", date: "date", link: "link"));
     }
+    notifyListeners();
   }
 }

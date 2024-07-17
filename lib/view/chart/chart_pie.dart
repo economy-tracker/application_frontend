@@ -2,9 +2,11 @@ import 'dart:ffi';
 import 'dart:math';
 
 import 'package:application_frontend/view/chart/chart_line.dart';
+import 'package:application_frontend/view/home/provider/overlay_provider.dart';
 import 'package:application_frontend/view/home/widget/color_box.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChartPie extends StatefulWidget {
   final List<double> values;
@@ -37,6 +39,8 @@ class _ChartPieState extends State<ChartPie> {
 
   @override
   Widget build(BuildContext context) {
+    final overlayProvider = context.read<OverlayProvider>();
+
     return Column(
       children: [
         Expanded(child: PieChart(
@@ -56,35 +60,22 @@ class _ChartPieState extends State<ChartPie> {
                 if (touchedIndex == -1){
                   return;
                 }
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Dialog(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          children: [
-                            Text('다음 그래프를 통해\n${fields[touchedIndex]} 변화를 살펴보세요.', style: const TextStyle(fontSize: 20), textAlign: TextAlign.center),
-                            Expanded(child: charts[touchedIndex]),
-                            ColorBox(
-                              color: widget.colors[touchedIndex],
-                              field: fields[touchedIndex]
-                            )
-                          ]
-                        )
-                      )
-                    );
-                  }
+                overlayProvider.setChartOverlay(
+                  category: fields[touchedIndex],
+                  chart: charts[touchedIndex],
+                  colorBoxColor: widget.colors[touchedIndex],
                 );
+
+                overlayProvider.showChartOverlay(Overlay.of(context));
               }
             )
           )
         )),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ColorBox(color: widget.colors[0], field: "금융"),
                 const SizedBox(width: 25),
@@ -93,12 +84,14 @@ class _ChartPieState extends State<ChartPie> {
             ),
             const SizedBox(height: 20),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ColorBox(color: widget.colors[2], field: "산업"),
                 const SizedBox(width: 25),
                 ColorBox(color: widget.colors[3], field: "부동산")
               ],
-            )
+            ),
+            const SizedBox(height: 20)
           ]
         )
       ]
