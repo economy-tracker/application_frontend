@@ -30,7 +30,11 @@ class _NewsPageState extends State<NewsPage> {
     controller = ScrollController()..addListener(loadData);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       data = Provider.of<NewsState>(context, listen: false);
-      await data.fetch(widget.field, page++);
+      if (widget.field == "주요"){
+        await data.fetchMain(page++);
+      } else {
+        await data.fetch(widget.field, page++);
+      }
     });
   }
 
@@ -43,16 +47,17 @@ class _NewsPageState extends State<NewsPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        controller: controller,
-        scrollDirection: Axis.vertical,
-        child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      controller: controller,
+      scrollDirection: Axis.vertical,
+      child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("${widget.field} 뉴스", style: heading),
           const Line(),
           const SizedBox(height: 20),
           NewsListView(field: widget.field)
         ]
-    ));
+      )
+    );
   }
 }

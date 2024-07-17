@@ -19,7 +19,8 @@ class _NewsListViewState extends State<NewsListView> {
   @override
   Widget build(BuildContext context) {
     data = context.watch<NewsState>();
-    if (widget.field == "메인"){
+
+    if (widget.field == "주요"){
       value = data.mainNews;
     } else {
       value = data.fieldNews[widget.field]!;

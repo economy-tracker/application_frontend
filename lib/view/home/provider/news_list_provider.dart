@@ -4,14 +4,12 @@ import '../../core.dart';
 
 class NewsState extends ChangeNotifier {
   List<NewsData> mainNews = [];
-  Map<String, List<NewsData>> fieldNews = {};
-
-  void init(){
-    fieldNews["금융"] = [];
-    fieldNews["증권"] = [];
-    fieldNews["산업"] = [];
-    fieldNews["부동산"] = [];
-  }
+  Map<String, List<NewsData>> fieldNews = {
+    "금융" : [],
+    "증권" : [],
+    "산업" : [],
+    "부동산" : []
+  };
 
   Future<void> fetchMain(int index)async {
     for (int i = 0; i < 10; i++){

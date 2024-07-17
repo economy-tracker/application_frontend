@@ -1,4 +1,3 @@
-import 'package:application_frontend/view/home/widget/color_box.dart';
 import 'package:flutter/material.dart';
 
 import '../core.dart';
