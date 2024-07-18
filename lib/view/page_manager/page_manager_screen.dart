@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:application_frontend/view/chart/chart_screen.dart';
 import 'package:application_frontend/view/home/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PageManagerScreen extends StatefulWidget {
   const PageManagerScreen({super.key});
@@ -31,6 +34,9 @@ class _PageManagerScreenState extends State<PageManagerScreen> {
       const HomeScreen(),
       ChartScreen(),
     ];
+    if (Platform.isAndroid){
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    }
 
     return Scaffold(
       backgroundColor: Colors.black,
