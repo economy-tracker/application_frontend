@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:application_frontend/view/chart/chart_screen.dart';
 import 'package:application_frontend/view/home/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:restart_app/restart_app.dart';
 
 class PageManagerScreen extends StatefulWidget {
   const PageManagerScreen({super.key});
@@ -11,12 +13,47 @@ class PageManagerScreen extends StatefulWidget {
 
 class _PageManagerScreenState extends State<PageManagerScreen> {
   late final PageController _pageController;
+  late Timer _timer;
+  final List<int> targetHours = [9, 15, 21];
   int selected = 0;
+
+  void _initializeTimer() {
+    _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+      final now = DateTime.now();
+      if (targetHours.contains(now.hour) && now.minute == 0) {
+        _showDialog();
+      }
+    });
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("신규 뉴스가 추가되었어요!"),
+          content: const Text("재시작하여 최신 데이터를 조회하세요."),
+          actions: [
+            TextButton(
+              onPressed: ()=>Restart.restartApp(),
+              child: const Text("재시작", style: TextStyle(color: Colors.green))
+            ),
+            TextButton(
+              onPressed: ()=>Navigator.of(context).pop(),
+              child: const Text("취소", style: TextStyle(color: Colors.red))
+            )
+          ]
+        );
+      }
+    );
+  }
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    _initializeTimer();
   }
 
   @override

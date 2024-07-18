@@ -20,6 +20,7 @@ dependencies:
   fl_chart: ^0.68.0
   dio: ^5.5.0+1
   url_launcher: ^6.3.0
+  restart_app: ^1.2.1
 
 dev_dependencies:
   flutter_test:
